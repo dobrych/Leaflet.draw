@@ -153,6 +153,7 @@ L.Draw.Polyline = L.Draw.Feature.extend({
 		}
 
 		this._vertexChanged(latlng, true);
+		this._fireNewPointCreatedEvent();
 	},
 
 	_finishShape: function () {
@@ -429,5 +430,10 @@ L.Draw.Polyline = L.Draw.Feature.extend({
 	_fireCreatedEvent: function () {
 		var poly = new this.Poly(this._poly.getLatLngs(), this.options.shapeOptions);
 		L.Draw.Feature.prototype._fireCreatedEvent.call(this, poly);
+	},
+	
+	_fireNewPointCreatedEvent: function () {
+		var poly = new this.Poly(this._poly.getLatLngs(), this.options.shapeOptions);
+		this._map.fire('draw:point-created', { layer: poly, layerType: this.type });
 	}
 });
